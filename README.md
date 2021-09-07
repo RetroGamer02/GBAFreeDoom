@@ -70,7 +70,7 @@ Extract the contents to a folder: (Eg: C:\DevKitPro\Projects\GBAFreeDoom)
 2) Use GBAWadUtil to create a header file with the WAD data.
 Open a command prompt.
 Type the following:
-**GbaWadUtil.exe -in freedoom1.wad -cfile doom.wad.c**
+**GbaWadUtil.exe -in freedoom1.wad -cfile freedoom.wad.c**
 And copy it to the **source\\iwad\\** directory.
 Alternatively just run the **build_XXXX.bat** files and it'll create it in the source\iwad\ path.
 
