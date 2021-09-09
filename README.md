@@ -1,5 +1,9 @@
 ## GBAFreeDoom
 
+FreeDoom wad is provided by the FreeDoom team.
+Copyright © 2001-2019
+Contributors to the Freedoom project.  All rights reserved.
+
 A port of prBoom to the GBA.
 
 This is a result of me messing around it works but its not great. With some help maybe it could be.
