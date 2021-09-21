@@ -384,6 +384,7 @@ void HU_Start(void)
     HU_FONTSTART
   );
 
+  _g->gamemode = retail;
   // initialize the automap's level title widget
   if (_g->gamestate == GS_LEVEL) /* cph - stop SEGV here when not in level */
   switch (_g->gamemode)
