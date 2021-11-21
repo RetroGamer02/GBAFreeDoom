@@ -407,10 +407,10 @@ const demostates[][4] =
     },
 
     {
-        {D_SetPageName, "TITLEPIC"},
-        {D_SetPageName, "TITLEPIC"},
-        {D_SetPageName, "TITLEPIC"},
-        {D_SetPageName, "TITLEPIC"},
+        {G_DeferedPlayDemo, "demo2"},
+        {G_DeferedPlayDemo, "demo2"},
+        {G_DeferedPlayDemo, "demo2"},
+        {G_DeferedPlayDemo, "demo2"},
     },
 
     {
