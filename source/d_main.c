@@ -385,25 +385,25 @@ static struct
 }
 //FreeDOOM Demo2 crashes
 const demostates[][4] =
-{ 
-    {
-        {NULL, NULL},
-        {NULL, NULL},
-        {NULL, NULL},
-        {NULL, NULL},
-    },
-
+{
     {
         {D_DrawTitle1, "TITLEPIC"},
         {D_DrawTitle1, "TITLEPIC"},
         {D_DrawTitle2, "TITLEPIC"},
         {D_DrawTitle1, "TITLEPIC"},
     },
+
     {
         {G_DeferedPlayDemo, "demo1"},
         {G_DeferedPlayDemo, "demo1"},
         {G_DeferedPlayDemo, "demo1"},
         {G_DeferedPlayDemo, "demo1"},
+    },
+    {
+        {D_SetPageName, "TITLEPIC"},
+        {D_SetPageName, "TITLEPIC"},
+        {D_SetPageName, "TITLEPIC"},
+        {D_SetPageName, "TITLEPIC"},
     },
 
     {
@@ -428,10 +428,10 @@ const demostates[][4] =
     },
 
     {
-        {D_SetPageName, "TITLEPIC"},
-        {D_SetPageName, "TITLEPIC"},
-        {D_SetPageName, "TITLEPIC"},
-        {D_SetPageName, "TITLEPIC"},
+        {NULL, NULL},
+        {NULL, NULL},
+        {NULL, NULL},
+        {NULL, NULL},
     }
 
 
