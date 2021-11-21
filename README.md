@@ -1,6 +1,6 @@
 ## GBAFreeDoom
 
-FreeDoom wad is provided by the FreeDoom team.
+FreeDoom original Iwad and resources are provided by the FreeDoom team.
 Copyright © 2001-2019
 Contributors to the Freedoom project.  All rights reserved.
 
@@ -10,13 +10,13 @@ This is a result of me messing around it works but its not great. With some help
 
 **What's hot?**
 
-- Supports FreeDoom IWAD.
+- Supports FreeDoom1 IWAD.
 
 - Renderer is largely intact. Z-Depth lighting is gone and there is mip-mapping but it's otherwise complete.
 
 - Monster behaviour is all intact. (I.e sound propagation etc.)
 
-- Framerate is pretty variable. Simple areas run at ~35fps. Complex areas (Eg: E4M2) chug along at about 10 FPS. It's running around the same as the original GBA Doom1 and Doom2 ports. Doom1 Episodes 1-3 are all completely playable. Episode 4 chugs.
+- Framerate is pretty variable. Simple areas run at ~35fps. Complex areas chug along. Doom1 Episode 1 is completely playable.
 
 - Sound and music support. Big thanks to BloodShedder for his Chiptune Doom MOD files.
 
@@ -74,7 +74,7 @@ Extract the contents to a folder: (Eg: C:\DevKitPro\Projects\GBAFreeDoom)
 2) Use GBAWadUtil to create a header file with the WAD data.
 Open a command prompt.
 Type the following:
-**GbaWadUtil.exe -in freedoom1.wad -cfile freedoom.wad.c**
+**GbaWadUtil.exe -in freedoom1.wad -cfile freedoom1.c**
 And copy it to the **source\\iwad\\** directory.
 Alternatively just run the **build_XXXX.bat** files and it'll create it in the source\iwad\ path.
 
