@@ -316,6 +316,7 @@ void M_DrawNewGame(void)
 
 void M_NewGame(int choice)
 {
+  _g->gamemode = retail;
     if ( _g->gamemode == commercial )
     {
 		M_SetupNextMenu(&NewDef);
@@ -344,7 +345,7 @@ void M_ChooseSkill(int choice)
     }
     else
     {
-        G_DeferedInitNew(choice,_g->epi+1,1);
+        G_DeferedInitNew(choice,_g->epi+1,1); //Skip to level - Retro
 		M_ClearMenus ();
     }    
 }
