@@ -383,7 +383,6 @@ static struct
     void (*func)(const char *);
     const char *name;
 }
-//FreeDOOM Demo2 crashes
 const demostates[][4] =
 {
     {

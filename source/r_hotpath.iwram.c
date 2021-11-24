@@ -651,6 +651,71 @@ static void R_DrawFuzzColumn (const draw_column_vars_t *dcvars)
     _g->fuzzpos = fuzzpos;
 }
 
+//Code adapted from viti95's FastDoom to the GBA
+void R_DrawFuzzColumnSaturn(const draw_column_vars_t *dcvars)
+{
+    int dc_yl = dcvars->yl;
+    int dc_yh = dcvars->yh;
+
+    int count;
+    byte *dest;
+    fixed_t frac;
+    fixed_t fracstep;
+    int initialdrawpos = 0;
+
+    // Adjust borders. Low...
+    if (dc_yl <= 0)
+        dc_yl = 1;
+
+    // .. and high.
+    if (dc_yh >= viewheight-1)
+        dc_yh = viewheight - 2;
+
+    count = IDiv32((dc_yh - dc_yl), 2) - 1;
+
+    // Zero length, column does not exceed a pixel.
+    if (count <= 0)
+        return;
+
+    const byte* colormap = &fullcolormap[6*256];
+
+    initialdrawpos = dc_yl + dcvars->x;
+
+    dest = drawvars.byte_topleft + ScreenYToOffset(dcvars->yl) + dcvars->x;
+
+    fracstep = (dcvars->iscale << COLEXTRABITS);
+    frac = (dcvars->texturemid + (dc_yl - centery)*dcvars->iscale) << COLEXTRABITS;
+
+    if (initialdrawpos & 1)
+    {
+        dest += SCREENWIDTH * 2;
+        frac += fracstep;
+    }
+
+    fracstep = 2 * (fracstep);
+
+    do
+    {
+        *dest = colormap[dcvars->source[frac>>COLBITS]];
+
+        dest += SCREENWIDTH * 4;
+        frac += fracstep;
+
+    } while (count--);
+
+    if ((dc_yh - dc_yl) & 1)
+    {
+        *dest = colormap[dcvars->source[(frac >> COLBITS)]];
+    }
+    else
+    {
+        if (!(initialdrawpos & 1))
+        {
+            *dest = colormap[dcvars->source[(frac >> COLBITS)]];
+        }
+    }
+}
+
 #pragma GCC pop_options
 
 
@@ -724,7 +789,7 @@ static void R_DrawVisSprite(const vissprite_t *vis)
     // mixed with translucent/non-translucenct 2s normals
 
     if (!dcvars.colormap)   // NULL colormap = shadow draw
-        colfunc = R_DrawFuzzColumn;    // killough 3/14/98
+        colfunc = R_DrawFuzzColumnSaturn;    // killough 3/14/98
     else
     {
         if (vis->mobjflags & MF_TRANSLATION)
