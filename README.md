@@ -1,22 +1,20 @@
-## GBAFreeDoom
+## GBAFreedoom
 
-FreeDoom wad is provided by the FreeDoom team.
-Copyright © 2001-2019
-Contributors to the Freedoom project.  All rights reserved.
+The Freedoom IWAD was made thanks to [the Freedoom team](https://freedoom.github.io), a [free and open-source](https://github.com/freedoom/freedoom/blob/master/COPYING.adoc) game based on the [Doom engine](https://doomwiki.org/wiki/Doom_engine).
 
-A port of prBoom to the GBA.
+A port of [prBoom](https://doomwiki.org/wiki/PrBoom) to the GBA.
 
-This is a result of me messing around it works but its not great. With some help maybe it could be.
+This is a result of me, Devin "RetroGamer02", messing around, it works but it's not great. With some help maybe it could be.
 
 **What's hot?**
 
-- Supports FreeDoom IWAD.
+- Supports Freedoom IWAD.
 
 - Renderer is largely intact. Z-Depth lighting is gone and there is mip-mapping but it's otherwise complete.
 
-- Monster behaviour is all intact. (I.e sound propagation etc.)
+- Monster behaviour is all intact. (i.e. sound propagation etc.)
 
-- Framerate is pretty variable. Simple areas run at ~35fps. Complex areas (Eg: E4M2) chug along at about 10 FPS. It's running around the same as the original GBA Doom1 and Doom2 ports. Doom1 Episodes 1-3 are all completely playable. Episode 4 chugs.
+- Framerate is pretty variable. Simple areas run at ~35FPS. Complex areas (e.g.: C4M2) chug along at about 10 FPS. It's running around the same as the original GBA Doom I and Doom II ports. Doom I Episodes 1-3 are all completely playable. Episode 4 chugs.
 
 - Sound and music support. Big thanks to BloodShedder for his Chiptune Doom MOD files.
 
@@ -26,9 +24,9 @@ This is a result of me messing around it works but its not great. With some help
 
 - Demo compatibility is broken.
 
-- General optimisation. We're never going to get a perfect 35FPS but I think there is still another 25% left without changing the visual quality/correctness/game behaviour. For reference, the first time I ran a build under the emulator it ran at about 3FPS.
+- General optimisation. We're never going to get a perfect 35FPS, but I think there is still another 25% left without changing the visual quality/correctness/game behaviour. For reference, the first time I ran a build under the emulator it ran at about 3FPS.
 
-- Although it is based on prBoom, most of the engine enhancements (dehacked, limit removing etc) have been reverted back to Vanilla. This is either for memory or performance reasons. Sadly, NUTS.wad and Okuplok are right out!
+- Although it is based on prBoom, most of the engine enhancements (DeHackEd, limit removing etc) have been reverted back to vanilla. This is either for memory or performance reasons. Sadly, [NUTS.wad](https://doomwiki.org/wiki/Joke_WAD#nuts.wad_and_derivatives) and [Okuplok](https://doomwiki.org/wiki/Okuplok_Slaughter_Map) are right out!
 
 - No multiplayer. 
 
@@ -64,31 +62,31 @@ KippyKip is maintaining an upstream fork of DoomHacks GBADoom with new features 
 
 ## Building:
 
-To build the GBA version, you will need DevKitArm. The easiest way to get up and running for Windows users is download the installer from here (https://github.com/devkitPro/installer/releases) and install the GBA dev components.
+To build the GBA version, you will need DevKitArm. The easiest way to get up and running for Windows users is to download the installer [from here](https://github.com/devkitPro/installer/releases) and install the GBA dev components.
 
-You will also need to use GBAWadUtil, included in the "GBAWadUtil\" directory. Alternatively download the latest build from the main source: (https://github.com/doomhack/GbaWadUtil). Windows (x64) users can download the Binary release from the releases page.
+You will also need to use GBAWadUtil, included in the "GBAWadUtil\" directory. Alternatively, download the latest build from [the main source](https://github.com/doomhack/GbaWadUtil) Windows (x64) users can download the binary release from the releases page.
 
-1) Download or Clone GBAFreeDoom source code.
-Extract the contents to a folder: (Eg: C:\DevKitPro\Projects\GBAFreeDoom)
+1) Download or Clone GBAFreedoom source code.
+Extract the contents to a folder: (e.g.: C:\DevKitPro\Projects\GBAFreedoom)
 
 2) Use GBAWadUtil to create a header file with the WAD data.
 Open a command prompt.
 Type the following:
-**GbaWadUtil.exe -in freedoom1.wad -cfile freedoom.wad.c**
-And copy it to the **source\\iwad\\** directory.
-Alternatively just run the **build_XXXX.bat** files and it'll create it in the source\iwad\ path.
+```GbaWadUtil.exe -in Freedoom1.wad -cfile Freedoom.wad.c```
+And copy it to the ```source\\iwad\\``` directory.
+Alternatively, just run the ```build_XXXX.bat``` files and it'll create it in the source\iwad\ path.
 
 3) Open C:\DevKitPro\Projects\GBADoom\source\doom_iwad.h in text editor or code editor of your choice.
 4) Change the first line to #include "iwad/**yourfile**.c" e.g.
-#include "iwad/freedoom1.c"
-#include "iwad/freedoom2.c"
+#include "iwad/Freedoom1.c"
+#include "iwad/Freedoom2.c"
 
-5) Run msys2.bat and type **make**
-You may need to edit the msys2.bat with notepad and change the path to go to your real "**msys2\msys2_shell.bat**" file within it if it doesn't work.
+5) Run msys2.bat and type ```make```
+You may need to edit the msys2.bat with notepad and change the path to go to your real ```msys2\msys2_shell.bat``` file within it if it doesn't work.
 
-6) The project should build GBAFreeDoom.gba and GBAFreeDoom.elf. You may see a lot of warning messages on the screen. These are normal.
+6) The project should build GBAFreedoom.gba and GBAFreedoom.elf. You may see a lot of warning messages on the screen. These are normal.
 
-7) Copy GBAFreeDoom.gba (this is the rom file) to your flash cart or run in a emulator.
+7) Copy GBAFreedoom.gba (this is the ROM file) to your flash cart or run in an emulator.
 
 
 ## Developers:
