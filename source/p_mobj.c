@@ -69,8 +69,8 @@ void P_ExplodeMissile (mobj_t* mo)
 
   mo->flags &= ~MF_MISSILE;
 
-  if (mo->info->deathsound)
-    S_StartSound (mo, mo->info->deathsound);
+  if (mobjinfo[mo->type].deathsound)
+    S_StartSound (mo, mobjinfo[mo->type].deathsound);
   }
 
 
@@ -95,12 +95,12 @@ void P_XYMovement (mobj_t* mo)
             mo->flags &= ~MF_SKULLFLY;
             mo->momz = 0;
 
-            P_SetMobjState (mo, mo->info->spawnstate);
+            P_SetMobjState (mo, mobjinfo[mo->type].spawnstate);
         }
         return;
     }
 
-    player = mo->player;
+    player = P_MobjIsPlayer(mo);
 
     if (mo->momx > MAXMOVE)
         mo->momx = MAXMOVE;
@@ -273,14 +273,14 @@ void P_XYMovement (mobj_t* mo)
 void P_ZMovement (mobj_t* mo)
 {
 
-  // check for smooth step up
+    // check for smooth step up
 
-  if (mo->player &&
-      mo->player->mo == mo &&  // killough 5/12/98: exclude voodoo dolls
-      mo->z < mo->floorz)
+    if (P_MobjIsPlayer(mo) &&
+            P_MobjIsPlayer(mo)->mo == mo &&  // killough 5/12/98: exclude voodoo dolls
+            mo->z < mo->floorz)
     {
-    mo->player->viewheight -= mo->floorz-mo->z;
-    mo->player->deltaviewheight = (VIEWHEIGHT - mo->player->viewheight)>>3;
+        P_MobjIsPlayer(mo)->viewheight -= mo->floorz-mo->z;
+        P_MobjIsPlayer(mo)->deltaviewheight = (VIEWHEIGHT - P_MobjIsPlayer(mo)->viewheight)>>3;
     }
 
   // adjust altitude
@@ -331,15 +331,15 @@ void P_ZMovement (mobj_t* mo)
 
     if (mo->momz < 0)
       {
-    if (mo->player && /* killough 5/12/98: exclude voodoo dolls */
-        mo->player->mo == mo && mo->momz < -GRAVITY*8)
+    if (P_MobjIsPlayer(mo) && /* killough 5/12/98: exclude voodoo dolls */
+        P_MobjIsPlayer(mo)->mo == mo && mo->momz < -GRAVITY*8)
       {
         // Squat down.
         // Decrease viewheight for a moment
         // after hitting the ground (hard),
         // and utter appropriate sound.
 
-        mo->player->deltaviewheight = mo->momz>>3;
+        P_MobjIsPlayer(mo)->deltaviewheight = mo->momz>>3;
         if (mo->health > 0) /* cph - prevent "oof" when dead */
     S_StartSound (mo, sfx_oof);
       }
@@ -449,7 +449,7 @@ void P_NightmareRespawn(mobj_t* mobj)
     // spawn the new monster
 
     //mthing = &mobj->spawnpoint;
-    if (mobj->info->flags & MF_SPAWNCEILING)
+    if (mobjinfo[mobj->type].flags & MF_SPAWNCEILING)
         z = ONCEILINGZ;
     else
         z = ONFLOORZ;
@@ -517,7 +517,6 @@ mobj_t* P_SpawnMobj(fixed_t x,fixed_t y,fixed_t z,mobjtype_t type)
   memset (mobj, 0, sizeof (*mobj));
   info = &mobjinfo[type];
   mobj->type = type;
-  mobj->info = info;
   mobj->x = x;
   mobj->y = y;
   mobj->radius = info->radius;
@@ -672,7 +671,6 @@ void P_SpawnPlayer (int n, const mapthing_t* mthing)
   // set color translations for player sprites
 
   mobj->angle      = ANG45 * (mthing->angle/45);
-  mobj->player     = p;
   mobj->health     = p->health;
 
   p->mo            = mobj;
@@ -935,8 +933,8 @@ mobj_t* P_SpawnMissile(mobj_t* source,mobj_t* dest,mobjtype_t type)
 
   th = P_SpawnMobj (source->x,source->y,source->z + 4*8*FRACUNIT,type);
 
-  if (th->info->seesound)
-    S_StartSound (th, th->info->seesound);
+  if (mobjinfo[th->type].seesound)
+    S_StartSound (th, mobjinfo[th->type].seesound);
 
   P_SetTarget(&th->target, source);    // where it came from
   an = R_PointToAngle2 (source->x, source->y, dest->x, dest->y);
@@ -951,11 +949,11 @@ mobj_t* P_SpawnMissile(mobj_t* source,mobj_t* dest,mobjtype_t type)
 
   th->angle = an;
   an >>= ANGLETOFINESHIFT;
-  th->momx = FixedMul (th->info->speed, finecosine[an]);
-  th->momy = FixedMul (th->info->speed, finesine[an]);
+  th->momx = FixedMul (mobjinfo[th->type].speed, finecosine[an]);
+  th->momy = FixedMul (mobjinfo[th->type].speed, finesine[an]);
 
   dist = P_AproxDistance (dest->x - source->x, dest->y - source->y);
-  dist = dist / th->info->speed;
+  dist = dist / mobjinfo[th->type].speed;
 
   if (dist < 1)
     dist = 1;
@@ -1005,14 +1003,24 @@ void P_SpawnPlayerMissile(mobj_t* source,mobjtype_t type)
 
   th = P_SpawnMobj (x,y,z, type);
 
-  if (th->info->seesound)
-    S_StartSound (th, th->info->seesound);
+  if (mobjinfo[th->type].seesound)
+    S_StartSound (th, mobjinfo[th->type].seesound);
 
   P_SetTarget(&th->target, source);
   th->angle = an;
-  th->momx = FixedMul(th->info->speed,finecosine[an>>ANGLETOFINESHIFT]);
-  th->momy = FixedMul(th->info->speed,finesine[an>>ANGLETOFINESHIFT]);
-  th->momz = FixedMul(th->info->speed,slope);
+  th->momx = FixedMul(mobjinfo[th->type].speed,finecosine[an>>ANGLETOFINESHIFT]);
+  th->momy = FixedMul(mobjinfo[th->type].speed,finesine[an>>ANGLETOFINESHIFT]);
+  th->momz = FixedMul(mobjinfo[th->type].speed,slope);
 
   P_CheckMissileSpawn(th);
   }
+
+struct player_s* P_MobjIsPlayer(const mobj_t* mobj)
+{
+    if(mobj == _g->player.mo)
+    {
+        return &_g->player;
+    }
+
+    return NULL;
+}
