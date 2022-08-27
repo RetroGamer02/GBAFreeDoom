@@ -517,23 +517,6 @@ static void CheckIWAD2(const unsigned char* iwad_data, const unsigned int iwad_l
                     ++sc;
               }
             }
-			//Final Doom IWAD check hacks ~Kippykip
-			//TNT - MURAL1
-			else if (fileinfo[length].name[0] == 'M' && fileinfo[length].name[1] == 'U' && fileinfo[length].name[2] == 'R'  && fileinfo[length].name[3] == 'A' && fileinfo[length].name[4] == 'L' && fileinfo[length].name[5] == '1' && fileinfo[length].name[6] == 0)
-            {
-				*gmode = commercial;
-				_g->gamemission = pack_tnt;
-				_g->gamemode = commercial;
-				return;
-            }
-			//Plutonia - WFALL1
-			else if (fileinfo[length].name[0] == 'W' && fileinfo[length].name[1] == 'F' && fileinfo[length].name[2] == 'A'  && fileinfo[length].name[3] == 'L' && fileinfo[length].name[4] == 'L' && fileinfo[length].name[5] == '1' && fileinfo[length].name[6] == 0)
-            {
-				*gmode = commercial;
-				_g->gamemission = pack_plut;
-				_g->gamemode = commercial;
-				return;
-            }
         }
     }
     else
@@ -545,19 +528,8 @@ static void CheckIWAD2(const unsigned char* iwad_data, const unsigned int iwad_l
     // Must be a full set for whichever mode is present
     // Lack of wolf-3d levels also detected here
 
-    *gmode = indetermined;
     *hassec = false;
-    if (cm>=30)
-    {
-        *gmode = commercial;
-        *hassec = sc>=2;
-    }
-    else if (ud>=9)
-        *gmode = retail;
-    else if (rg>=18)
-        *gmode = registered;
-    else if (sw>=9)
-        *gmode = shareware;
+    *gmode = retail;
 }
 
 //
@@ -632,7 +604,7 @@ static void D_DoomMainSetup(void)
     switch ( _g->gamemode )
     {
         case retail:
-            doomverstr = "Free DOOM Phase 1";
+            doomverstr = "FreeDoom Phase 1";
             break;
         case shareware:
             doomverstr = "DOOM Shareware";
@@ -650,7 +622,7 @@ static void D_DoomMainSetup(void)
                 doomverstr = "DOOM 2: TNT - Evilution";
                 break;
             default:
-                doomverstr = "Free DOOM Phase 2";
+                doomverstr = "FreeDoom Phase 2";
                 break;
             }
             break;
@@ -672,9 +644,7 @@ static void D_DoomMainSetup(void)
 
     lprintf(LO_ALWAYS, "It comes with ABSOLUTELY\nNO WARRANTY.\nSee the file COPYING for\ndetails.");
 
-	lprintf(LO_ALWAYS, "FreeDoom is provided by the FreeDoom team.\nCopyright � 2001-2019 Contributors to the Freedoom project.\nAll rights reserved.");
-
-    lprintf(LO_ALWAYS, "\nPhew. Thats the legal\nstuff out of the way.\nLets play FreeDoom!\n");
+    lprintf(LO_ALWAYS, "\nPhew. Thats the nasty legal\nstuff out of the way.\nLets play FreeDoom!\n");
 
 
 
@@ -705,10 +675,6 @@ static void D_DoomMainSetup(void)
     P_Init();
 
     //jff 9/3/98 use logical output routine
-    lprintf(LO_INFO,"I_Init: Set up machine state.");
-    I_Init();
-
-    //jff 9/3/98 use logical output routine
     lprintf(LO_INFO,"S_Init: Setting up sound.");
     S_Init(_g->snd_SfxVolume /* *8 */, _g->snd_MusicVolume /* *8*/ );
 
@@ -726,6 +692,8 @@ static void D_DoomMainSetup(void)
     _g->idmusnum = -1; //jff 3/17/98 insure idmus number is blank
 
     _g->fps_show = false;
+
+    _g->highDetail = false;
 
     I_InitGraphics();
 

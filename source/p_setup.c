@@ -75,10 +75,10 @@ static void P_LoadVertexes (int lump)
 
 static void P_LoadSegs (int lump)
 {
-    _g->numsegs = W_LumpLength(lump) / sizeof(seg_t);
+    int numsegs = W_LumpLength(lump) / sizeof(seg_t);
     _g->segs = (const seg_t *)W_CacheLumpNum(lump);
 
-    if (!_g->numsegs)
+    if (!numsegs)
       I_Error("P_LoadSegs: no segs in level");
 }
 
@@ -174,21 +174,29 @@ static void P_LoadNodes (int lump)
 
 static void P_LoadThings (int lump)
 {
-  int  i, numthings = W_LumpLength (lump) / sizeof(mapthing_t);
-  const mapthing_t *data = W_CacheLumpNum (lump);
+    int  i, numthings = W_LumpLength (lump) / sizeof(mapthing_t);
+    const mapthing_t *data = W_CacheLumpNum (lump);
 
-  if ((!data) || (!numthings))
-    I_Error("P_LoadThings: no things in level");
+    if ((!data) || (!numthings))
+        I_Error("P_LoadThings: no things in level");
 
-  for (i=0; i<numthings; i++)
+    _g->thingPool = Z_Calloc(numthings, sizeof(mobj_t), PU_LEVEL, NULL);
+    _g->thingPoolSize = numthings;
+
+    for(int i = 0; i < numthings; i++)
     {
-      const mapthing_t* mt = &data[i];
+        _g->thingPool[i].type = MT_NOTHING;
+    }
 
-      if (!P_IsDoomnumAllowed(mt->type))
-        continue;
+    for (i=0; i<numthings; i++)
+    {
+        const mapthing_t* mt = &data[i];
 
-      // Do spawn all other stuff.
-      P_SpawnMapThing(mt);
+        if (!P_IsDoomnumAllowed(mt->type))
+            continue;
+
+        // Do spawn all other stuff.
+        P_SpawnMapThing(mt);
     }
 }
 
@@ -455,58 +463,58 @@ void P_FreeLevelData()
 
 void P_SetupLevel(int episode, int map, int playermask, skill_t skill)
 {
-  int   i;
-  char  lumpname[9];
-  int   lumpnum;
+    int   i;
+    char  lumpname[9];
+    int   lumpnum;
 
-  _g->totallive = _g->totalkills = _g->totalitems = _g->totalsecret = _g->wminfo.maxfrags = 0;
-  _g->wminfo.partime = 180;
+    _g->totallive = _g->totalkills = _g->totalitems = _g->totalsecret = 0;
+    _g->wminfo.partime = 180;
 
-  for (i=0; i<MAXPLAYERS; i++)
-    _g->player.killcount = _g->player.secretcount = _g->player.itemcount = 0;
+    for (i=0; i<MAXPLAYERS; i++)
+        _g->player.killcount = _g->player.secretcount = _g->player.itemcount = 0;
 
-  // Initial height of PointOfView will be set by player think.
-  _g->player.viewz = 1;
+    // Initial height of PointOfView will be set by player think.
+    _g->player.viewz = 1;
 
-  // Make sure all sounds are stopped before Z_FreeTags.
-  S_Start();
+    // Make sure all sounds are stopped before Z_FreeTags.
+    S_Start();
 
-  P_FreeLevelData();
+    P_FreeLevelData();
 
-  //Load the sky texture.
-  R_GetTexture(_g->skytexture);
+    //Load the sky texture.
+    R_GetTexture(_g->skytexture);
 
-  if (_g->rejectlump != -1)
-  { // cph - unlock the reject table
-    _g->rejectlump = -1;
-  }
+    if (_g->rejectlump != -1)
+    { // cph - unlock the reject table
+        _g->rejectlump = -1;
+    }
 
-  P_InitThinkers();
+    P_InitThinkers();
 
-  // if working with a devlopment map, reload it
-  //    W_Reload ();     killough 1/31/98: W_Reload obsolete
+    // if working with a devlopment map, reload it
+    //    W_Reload ();     killough 1/31/98: W_Reload obsolete
 
-  // find map name
-  if (_g->gamemode == commercial)
-  {
-    sprintf(lumpname, "MAP%02d", map);           // killough 1/24/98: simplify
-  }
-  else
-  {
-    sprintf(lumpname, "E%dM%d", episode, map);   // killough 1/24/98: simplify
-  }
+    // find map name
+    if (_g->gamemode == commercial)
+    {
+        sprintf(lumpname, "MAP%02d", map);           // killough 1/24/98: simplify
+    }
+    else
+    {
+        sprintf(lumpname, "E%dM%d", episode, map);   // killough 1/24/98: simplify
+    }
 
-  lumpnum = W_GetNumForName(lumpname);
+    lumpnum = W_GetNumForName(lumpname);
 
-  _g->leveltime = 0; _g->totallive = 0;
+    _g->leveltime = 0; _g->totallive = 0;
 
-  P_LoadVertexes  (lumpnum+ML_VERTEXES);
-  P_LoadSectors   (lumpnum+ML_SECTORS);
-  P_LoadSideDefs  (lumpnum+ML_SIDEDEFS);
-  P_LoadLineDefs  (lumpnum+ML_LINEDEFS);
-  P_LoadSideDefs2 (lumpnum+ML_SIDEDEFS);
-  P_LoadLineDefs2 (lumpnum+ML_LINEDEFS);
-  P_LoadBlockMap  (lumpnum+ML_BLOCKMAP);
+    P_LoadVertexes  (lumpnum+ML_VERTEXES);
+    P_LoadSectors   (lumpnum+ML_SECTORS);
+    P_LoadSideDefs  (lumpnum+ML_SIDEDEFS);
+    P_LoadLineDefs  (lumpnum+ML_LINEDEFS);
+    P_LoadSideDefs2 (lumpnum+ML_SIDEDEFS);
+    P_LoadLineDefs2 (lumpnum+ML_LINEDEFS);
+    P_LoadBlockMap  (lumpnum+ML_BLOCKMAP);
 
 
     P_LoadSubsectors(lumpnum + ML_SSECTORS);
@@ -515,36 +523,36 @@ void P_SetupLevel(int episode, int map, int playermask, skill_t skill)
 
     P_GroupLines();
 
-  // reject loading and underflow padding separated out into new function
-  // P_GroupLines modified to return a number the underflow padding needs
-  P_LoadReject(lumpnum);
+    // reject loading and underflow padding separated out into new function
+    // P_GroupLines modified to return a number the underflow padding needs
+    P_LoadReject(lumpnum);
 
-  // Note: you don't need to clear player queue slots --
-  // a much simpler fix is in g_game.c -- killough 10/98
+    // Note: you don't need to clear player queue slots --
+    // a much simpler fix is in g_game.c -- killough 10/98
 
-  /* cph - reset all multiplayer starts */
-  memset(_g->playerstarts,0,sizeof(_g->playerstarts));
+    /* cph - reset all multiplayer starts */
+    memset(_g->playerstarts,0,sizeof(_g->playerstarts));
 
-  for (i = 0; i < MAXPLAYERS; i++)
-    _g->player.mo = NULL;
+    for (i = 0; i < MAXPLAYERS; i++)
+        _g->player.mo = NULL;
 
-  P_MapStart();
+    P_MapStart();
 
-  P_LoadThings(lumpnum+ML_THINGS);
+    P_LoadThings(lumpnum+ML_THINGS);
 
-  {
-      if (_g->playeringame && !_g->player.mo)
-        I_Error("P_SetupLevel: missing player %d start\n", i+1);
-  }
+    {
+        if (_g->playeringame && !_g->player.mo)
+            I_Error("P_SetupLevel: missing player %d start\n", i+1);
+    }
 
-  // killough 3/26/98: Spawn icon landings:
-  if (_g->gamemode==commercial)
-    P_SpawnBrainTargets();
+    // killough 3/26/98: Spawn icon landings:
+    if (_g->gamemode==commercial)
+        P_SpawnBrainTargets();
 
-  // set up world state
-  P_SpawnSpecials();
+    // set up world state
+    P_SpawnSpecials();
 
-  P_MapEnd();
+    P_MapEnd();
 
 }
 
