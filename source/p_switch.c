@@ -108,10 +108,10 @@ void P_InitSwitchList(void)
 
     episode = 1;
 
-    if (_g->gamemode == registered || _g->gamemode == retail)
+    if (_g->gamemode == phase1)
         episode = 2;
     else
-        if ( _g->gamemode == commercial )
+        if ( _g->gamemode == phase2 )
             episode = 3;
 
     for (index = 0,i = 0;i < MAXSWITCHES;i++)

@@ -54,8 +54,8 @@
 
 //
 // Different vetween registered DOOM (1994) and
-//  Ultimate DOOM - Final edition (retail, 1995?).
-// This is supposedly ignored for commercial
+//  Ultimate DOOM - Final edition (phase1, 1995?).
+// This is supposedly ignored for phase2
 //  release (aka DOOM II), which had 34 maps
 //  in one episode. So there.
 #define NUMEPISODES 4
@@ -254,7 +254,7 @@ static void WI_endNetgameStats(void)
  */
 void WI_levelNameLump(int epis, int map, char* buf)
 {
-  if (_g->gamemode == commercial)
+  if (_g->gamemode == phase2)
   {
     sprintf(buf, "CWILV%2.2d", map);
   }
@@ -274,7 +274,7 @@ static void WI_slamBackground(void)
 {
   char  name[9];  // limited to 8 characters
 
-  if (_g->gamemode == commercial || (_g->gamemode == retail && _g->wbs->epsd == 3))
+  if (_g->gamemode == phase2 || (_g->gamemode == phase1 && _g->wbs->epsd == 3))
     strcpy(name, "INTERPIC");
   else
     sprintf(name, "WIMAP%d", _g->wbs->epsd);
@@ -641,7 +641,7 @@ void WI_updateNoState(void)
 //
 void WI_initShowNextLoc(void)
 {
-  if ((_g->gamemode != commercial) && (_g->gamemap == 8)) {
+  if ((_g->gamemode != phase2) && (_g->gamemap == 8)) {
     G_WorldDone();
     return;
   }
@@ -696,7 +696,7 @@ void WI_drawShowNextLoc(void)
     // draw animated background
     WI_drawAnimatedBack();
 
-    if ( _g->gamemode != commercial)
+    if ( _g->gamemode != phase2)
     {
         if (_g->wbs->epsd > 2)
         {
@@ -720,7 +720,7 @@ void WI_drawShowNextLoc(void)
     }
 
     // draws which level you are entering..
-    if ( (_g->gamemode != commercial)
+    if ( (_g->gamemode != phase2)
          || _g->wbs->next != 30)  // check for MAP30 end game
         WI_drawEL();
 }
@@ -869,7 +869,7 @@ void WI_updateStats(void)
     {
       S_StartSound(0, sfx_sgcock);
 
-      if (_g->gamemode == commercial)
+      if (_g->gamemode == phase2)
         WI_initNoState();
       else
         WI_initShowNextLoc();
@@ -971,7 +971,7 @@ void WI_Ticker(void)
   if (_g->bcnt == 1)
   {
     // intermission music
-    if ( _g->gamemode == commercial )
+    if ( _g->gamemode == phase2 )
       S_ChangeMusic(mus_dm2int, true);
     else
       S_ChangeMusic(mus_inter, true);
@@ -1072,7 +1072,7 @@ void WI_initVariables(wbstartstruct_t* wbstartstruct)
   if (!_g->wbs->maxitems)
     _g->wbs->maxitems = 1;
 
-  if ( _g->gamemode != retail )
+  if ( _g->gamemode != phase1 )
     if (_g->wbs->epsd > 2)
       _g->wbs->epsd -= 3;
 }

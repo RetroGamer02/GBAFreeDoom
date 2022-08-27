@@ -82,9 +82,7 @@ void F_StartFinale (void)
     switch ( _g->gamemode )
     {
         // DOOM 1 - E1, E3 or E4, but each nine missions
-        case shareware:
-        case registered:
-        case retail:
+        case phase1:
         {
             S_ChangeMusic(mus_victor, true);
 
@@ -114,7 +112,7 @@ void F_StartFinale (void)
         }
 
         // DOOM II and missions packs with E1, M34
-        case commercial:
+        case phase2:
         {
             S_ChangeMusic(mus_read_m, true);
 
@@ -223,7 +221,7 @@ static float Get_TextSpeed(void)
                 (_g->midstage ? NEWTEXTWAIT : TEXTWAIT) ||
                 (_g->midstage && _g->acceleratestage))
         {
-            if (_g->gamemode != commercial)       // Doom 1 / Ultimate Doom episode end
+            if (_g->gamemode != phase2)       // Doom 1 / Ultimate Doom episode end
             {                               // with enough time, it's automatic
                 _g->finalecount = 0;
                 _g->finalestage = 1;
@@ -634,7 +632,7 @@ void F_Drawer (void)
         {
         // CPhipps - patch drawing updated
         case 1:
-            if ( _g->gamemode == retail )
+            if ( _g->gamemode == phase1 )
                 V_DrawNamePatch(0, 0, 0, "CREDIT", CR_DEFAULT, VPT_STRETCH);
             else
                 V_DrawNamePatch(0, 0, 0, "HELP2", CR_DEFAULT, VPT_STRETCH);

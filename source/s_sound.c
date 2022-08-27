@@ -150,7 +150,7 @@ void S_Start(void)
     if (_g->idmusnum!=-1)
         mnum = _g->idmusnum; //jff 3/17/98 reload IDMUS music if not -1
     else
-        if (_g->gamemode == commercial)
+        if (_g->gamemode == phase2)
             mnum = mus_runnin + _g->gamemap - 1;
         else
         {

@@ -1750,7 +1750,7 @@ void A_BossDeath(mobj_t *mo)
     thinker_t *th;
     line_t    junk;
 
-    if (_g->gamemode == commercial)
+    if (_g->gamemode == phase2)
     {
         if (_g->gamemap != 7)
             return;
@@ -1830,7 +1830,7 @@ void A_BossDeath(mobj_t *mo)
         }
 
     // victory!
-    if ( _g->gamemode == commercial)
+    if ( _g->gamemode == phase2)
     {
         if (_g->gamemap == 7)
         {
@@ -2085,8 +2085,7 @@ void A_SpawnFly(mobj_t *mo)
 void A_PlayerScream(mobj_t *mo)
 {
   int sound = sfx_pldeth;  // Default death sound.
-  if (_g->gamemode != shareware && mo->health < -50)
-    sound = sfx_pdiehi;   // IF THE PLAYER DIES LESS THAN -50% WITHOUT GIBBING
+
   S_StartSound(mo, sound);
 }
 

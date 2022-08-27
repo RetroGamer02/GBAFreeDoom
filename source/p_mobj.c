@@ -730,8 +730,8 @@ void P_SpawnPlayer (int n, const mapthing_t* mthing)
 
 boolean P_IsDoomnumAllowed(int doomnum)
 {
-  // Do not spawn cool, new monsters if !commercial
-  if (_g->gamemode != commercial)
+  // Do not spawn cool, new monsters if !phase2
+  if (_g->gamemode != phase2)
     switch(doomnum)
       {
       case 64:  // Archvile

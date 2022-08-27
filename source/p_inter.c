@@ -337,7 +337,7 @@ void P_TouchSpecialThing(mobj_t *special, mobj_t *toucher)
       break;
 
     case SPR_MEGA:
-      if (_g->gamemode != commercial)
+      if (_g->gamemode != phase2)
         return;
       player->health = mega_health;
       player->mo->health = player->health;

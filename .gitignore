@@ -56,3 +56,4 @@ source/iwad/
 *.sav
 *.elf
 msys2_2.bat
+msys2-personal.bat

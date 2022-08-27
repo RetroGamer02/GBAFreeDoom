@@ -92,7 +92,7 @@ const int     key_menu_escape = KEYD_START;                                     
 const int     key_menu_enter = KEYD_A;                                      // phares 3/7/98
 const int     key_strafeleft = KEYD_L;
 const int     key_straferight = KEYD_R;
-//Match Doom II GBA retail controls ~ Kippykip
+//Match Doom II GBA phase1 controls ~ Kippykip
 const int     key_fire = KEYD_B; 
 const int     key_use = KEYD_A;
 const int     key_speed = KEYD_A;
@@ -285,7 +285,7 @@ void G_BuildTiccmd(ticcmd_t* cmd)
             // in use, or if the SSG is not already in use and the
             // player prefers it.
 
-            if (newweapon == wp_shotgun && _g->gamemode == commercial &&
+            if (newweapon == wp_shotgun && _g->gamemode == phase2 &&
                     player->weaponowned[wp_supershotgun] &&
                     (!player->weaponowned[wp_shotgun] ||
                      player->readyweapon == wp_shotgun ||
@@ -333,7 +333,7 @@ static void G_DoLoadLevel (void)
 
     // DOOM determines the sky texture to be used
     // depending on the current episode, and the game version.
-    if (_g->gamemode == commercial)
+    if (_g->gamemode == phase2)
     {
         _g->skytexture = R_LoadTextureByName("SKY3");
         if (_g->gamemap < 12)
@@ -660,7 +660,7 @@ void G_ExitLevel (void)
 
 void G_SecretExitLevel (void)
 {
-    if (_g->gamemode!=commercial || _g->haswolflevels)
+    if (_g->gamemode!=phase2 || _g->haswolflevels)
         _g->secretexit = true;
     else
         _g->secretexit = false;
@@ -681,7 +681,7 @@ void G_DoCompleted (void)
     if (_g->automapmode & am_active)
         AM_Stop();
 
-    if (_g->gamemode != commercial && _g->gamemap == 9) // kilough 2/7/98
+    if (_g->gamemode != phase2 && _g->gamemap == 9) // kilough 2/7/98
         _g->player.didsecret = true;
 
     _g->wminfo.didsecret = _g->player.didsecret;
@@ -689,7 +689,7 @@ void G_DoCompleted (void)
     _g->wminfo.last = _g->gamemap -1;
 
     // wminfo.next is 0 biased, unlike gamemap
-    if (_g->gamemode == commercial)
+    if (_g->gamemode == phase2)
     {
         if (_g->secretexit)
             switch(_g->gamemap)
@@ -741,7 +741,7 @@ void G_DoCompleted (void)
     _g->wminfo.maxitems = _g->totalitems;
     _g->wminfo.maxsecret = _g->totalsecret;
 
-    if ( _g->gamemode == commercial )
+    if ( _g->gamemode == phase2 )
         _g->wminfo.partime = TICRATE*cpars[_g->gamemap-1];
     else
         _g->wminfo.partime = TICRATE*pars[_g->gameepisode][_g->gamemap];
@@ -769,7 +769,7 @@ void G_DoCompleted (void)
     // print "FINISHED: <mapname>" when the player exits the current map
     if (nodrawers && (_g->demoplayback || _g->timingdemo))
     {
-        if (_g->gamemode == commercial)
+        if (_g->gamemode == phase2)
             lprintf(LO_INFO, "FINISHED: MAP%02d\n", _g->gamemap);
         else
             lprintf(LO_INFO, "FINISHED: E%dM%d\n", _g->gameepisode, _g->gamemap);
@@ -789,7 +789,7 @@ void G_WorldDone (void)
     if (_g->secretexit)
         _g->player.didsecret = true;
 
-    if (_g->gamemode == commercial)
+    if (_g->gamemode == phase2)
     {
         switch (_g->gamemap)
         {
@@ -859,7 +859,7 @@ void G_UpdateSaveGameStrings()
         }
         else
         {
-            if(_g->gamemode == commercial)
+            if(_g->gamemode == phase2)
             {
                 strcpy(_g->savegamestrings[i], "MAP ");
 
@@ -1057,24 +1057,18 @@ void G_InitNew(skill_t skill, int episode, int map)
     if (episode < 1)
         episode = 1;
 
-    if (_g->gamemode == retail)
+    if (_g->gamemode == phase1)
     {
         if (episode > 4)
             episode = 4;
     }
     else
-        if (_g->gamemode == shareware)
-        {
-            if (episode > 1)
-                episode = 1; // only start episode 1 on shareware
-        }
-        else
-            if (episode > 3)
-                episode = 3;
+        if (episode > 3)
+            episode = 3;
 
     if (map < 1)
         map = 1;
-    if (map > 9 && _g->gamemode != commercial)
+    if (map > 9 && _g->gamemode != phase2)
         map = 9;
 
     M_ClearRandom();

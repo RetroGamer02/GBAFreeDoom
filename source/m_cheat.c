@@ -146,12 +146,11 @@ static void cheat_idkfa()
 
     // You can't own weapons that aren't in the game // phares 02/27/98
     for (i=0;i<NUMWEAPONS;i++)
-        if (!(((i == wp_plasma || i == wp_bfg) && _g->gamemode == shareware) ||
-              (i == wp_supershotgun && _g->gamemode != commercial)))
+        if (!((i == wp_supershotgun && _g->gamemode != phase2)))
             plyr->weaponowned[i] = true;
 
     for (i=0;i<NUMAMMO;i++)
-        if (i!=am_cell || _g->gamemode!=shareware)
+        if (i!=am_cell)
             plyr->ammo[i] = plyr->maxammo[i];
 
     for (i=0;i<NUMCARDS;i++)
@@ -178,12 +177,11 @@ static void cheat_ammo()
 
     // You can't own weapons that aren't in the game // phares 02/27/98
     for (i=0;i<NUMWEAPONS;i++)
-        if (!(((i == wp_plasma || i == wp_bfg) && _g->gamemode == shareware) ||
-              (i == wp_supershotgun && _g->gamemode != commercial)))
+        if (!((i == wp_supershotgun && _g->gamemode != phase2)))
             plyr->weaponowned[i] = true;
 
     for (i=0;i<NUMAMMO;i++)
-        if (i!=am_cell || _g->gamemode!=shareware)
+        if (i!=am_cell)
             plyr->ammo[i] = plyr->maxammo[i];
 
     plyr->message = STSTR_FAADDED;

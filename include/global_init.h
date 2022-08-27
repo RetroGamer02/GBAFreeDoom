@@ -28,8 +28,8 @@ _g->oldgamestate = -1;
 //doomstat.c
 //******************************************************************************
 
-// Game Mode - identify IWAD as shareware, retail etc.
-_g->gamemode = retail;
+// Game Mode - identify IWAD as phase1 etc.
+_g->gamemode = phase1;
 _g->gamemission = doom;
 
 

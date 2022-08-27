@@ -202,25 +202,6 @@ enum
   ep_end
 };
 
-
-// The definitions of the Registered/Shareware Episodes menu
-
-static const menuitem_t EpisodeMenu3[]=
-{
-  {1,"M_EPI1", M_Episode},
-  {1,"M_EPI2", M_Episode},
-  {1,"M_EPI3", M_Episode}
-};
-
-static const menu_t EpiDef3 =
-{
-  ep_end-1,        // # of menu items
-  EpisodeMenu3,   // menuitem_t ->
-  M_DrawEpisode, // drawing routine ->
-  48,63,         // x,y
-  &MainDef,0,
-};
-
 // The definitions of the Episodes menu
 
 static const menuitem_t EpisodeMenu[]=
@@ -284,21 +265,6 @@ void M_DrawEpisode(void)
 
 void M_Episode(int choice)
 {
-  if ( (_g->gamemode == shareware) && choice)
-  {
-    M_StartMessage(SWSTRING,NULL,false); // Ty 03/27/98 - externalized
-    _g->itemOn = 0;
-    return;
-  }
-
-  // Yet another hack...
-  if ( (_g->gamemode == registered) && (choice > 2))
-    {
-    lprintf( LO_WARN,
-     "M_Episode: 4th episode requires UltimateDOOM\n");
-    choice = 0;
-    }
-
   _g->epi = choice;
   M_SetupNextMenu(&NewDef);
   _g->itemOn = 2; //Set hurt me plenty as default difficulty
@@ -317,14 +283,12 @@ void M_DrawNewGame(void)
 
 void M_NewGame(int choice)
 {
-    if ( _g->gamemode == commercial )
+    if ( _g->gamemode == phase2 )
     {
 		M_SetupNextMenu(&NewDef);
 		_g->itemOn = 2; //Set hurt me plenty as default difficulty
-	}else if( (_g->gamemode == shareware) || (_g->gamemode == registered) )
-        M_SetupNextMenu(&EpiDef3);
-    else
-        M_SetupNextMenu(&EpiDef);
+	} else
+    M_SetupNextMenu(&EpiDef);
 }
 
 // CPhipps - static

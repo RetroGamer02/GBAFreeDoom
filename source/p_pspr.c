@@ -175,13 +175,11 @@ int P_SwitchWeapon(player_t *player)
           newweapon = wp_missile;
         break;
       case 6:
-        if (player->weaponowned[wp_plasma] && player->ammo[am_cell] &&
-            _g->gamemode != shareware)
+        if (player->weaponowned[wp_plasma] && player->ammo[am_cell])
           newweapon = wp_plasma;
         break;
       case 7:
-        if (player->weaponowned[wp_bfg] && _g->gamemode != shareware &&
-            player->ammo[am_cell] >= (40))
+        if (player->weaponowned[wp_bfg] && player->ammo[am_cell] >= (40))
           newweapon = wp_bfg;
         break;
       case 8:
@@ -189,7 +187,7 @@ int P_SwitchWeapon(player_t *player)
           newweapon = wp_chainsaw;
         break;
       case 9:
-        if (player->weaponowned[wp_supershotgun] && _g->gamemode == commercial &&
+        if (player->weaponowned[wp_supershotgun] && _g->gamemode == phase2 &&
             player->ammo[am_shell] >= (2))
           newweapon = wp_supershotgun;
         break;
@@ -260,7 +258,7 @@ int P_CheckCanSwitchWeapon(weapontype_t weapon, player_t* player)
 
         case wp_bfg:
         {
-            if ((player->ammo[am_cell] >= 40) && (_g->gamemode != shareware))
+            if ((player->ammo[am_cell] >= 40))
                 return wp_bfg;
         }
         break;
@@ -273,7 +271,7 @@ int P_CheckCanSwitchWeapon(weapontype_t weapon, player_t* player)
 
         case wp_supershotgun:
         {
-            if ((player->ammo[am_shell] >= 2) && (_g->gamemode == commercial))
+            if ((player->ammo[am_shell] >= 2) && (_g->gamemode == phase2))
                 return wp_supershotgun;
         }
         break;

@@ -28,7 +28,7 @@
  *
  * DESCRIPTION:
  *  DOOM main program (D_DoomMain) and game loop (D_DoomLoop),
- *  plus functions to determine game mode (shareware, registered),
+ *  plus functions to determine game mode (phase1),
  *  parse command line parameters, configure game parameters (turbo),
  *  and call the startup functions.
  *
@@ -488,8 +488,6 @@ static void CheckIWAD2(const unsigned char* iwad_data, const unsigned int iwad_l
 {
     const wadinfo_t* header = (const wadinfo_t*)iwad_data;
 
-    int ud=0,rg=0,sw=0,cm=0,sc=0;
-
     if(!strncmp(header->identification, "IWAD", 4))
     {
         size_t length = header->numlumps;
@@ -499,23 +497,11 @@ static void CheckIWAD2(const unsigned char* iwad_data, const unsigned int iwad_l
         {
             if (fileinfo[length].name[0] == 'E' && fileinfo[length].name[2] == 'M' && fileinfo[length].name[4] == 0)
             {
-              if (fileinfo[length].name[1] == '4')
-                ++ud;
-              else if (fileinfo[length].name[1] == '3')
-                ++rg;
-              else if (fileinfo[length].name[1] == '2')
-                ++rg;
-              else if (fileinfo[length].name[1] == '1')
-                ++sw;
+                *gmode = phase1;
             }
             else if (fileinfo[length].name[0] == 'M' && fileinfo[length].name[1] == 'A' && fileinfo[length].name[2] == 'P' && fileinfo[length].name[5] == 0)
             {
-              ++cm;
-              if (fileinfo[length].name[3] == '3')
-              {
-                  if (fileinfo[length].name[4] == '1' || fileinfo[length].name[4] == '2')
-                    ++sc;
-              }
+                *gmode = phase2;
             }
         }
     }
@@ -529,7 +515,7 @@ static void CheckIWAD2(const unsigned char* iwad_data, const unsigned int iwad_l
     // Lack of wolf-3d levels also detected here
 
     *hassec = false;
-    *gmode = retail;
+    //*gmode = phase1;
 }
 
 //
@@ -563,15 +549,12 @@ static void IdentifyVersion()
      */
     switch(_g->gamemode)
     {
-        case retail:
-        case registered:
-        case shareware:
+        case phase1:
             _g->gamemission = doom;
             break;
-        case commercial:
+        case phase2:
             _g->gamemission = doom2;
             break;
-
         default:
             _g->gamemission = none;
             break;
@@ -603,28 +586,11 @@ static void D_DoomMainSetup(void)
 
     switch ( _g->gamemode )
     {
-        case retail:
+        case phase1:
             doomverstr = "FreeDoom Phase 1";
             break;
-        case shareware:
-            doomverstr = "DOOM Shareware";
-            break;
-        case registered:
-            doomverstr = "DOOM Registered";
-            break;
-        case commercial:  // Ty 08/27/98 - fixed gamemode vs gamemission
-            switch (_g->gamemission)
-            {
-            case pack_plut:
-                doomverstr = "DOOM 2: Plutonia Experiment";
-                break;
-            case pack_tnt:
-                doomverstr = "DOOM 2: TNT - Evilution";
-                break;
-            default:
-                doomverstr = "FreeDoom Phase 2";
-                break;
-            }
+        case phase2:
+            doomverstr = "FreeDoom Phase 2";
             break;
         default:
             doomverstr = "Public DOOM";
@@ -644,7 +610,9 @@ static void D_DoomMainSetup(void)
 
     lprintf(LO_ALWAYS, "It comes with ABSOLUTELY\nNO WARRANTY.\nSee the file COPYING for\ndetails.");
 
-    lprintf(LO_ALWAYS, "\nPhew. Thats the nasty legal\nstuff out of the way.\nLets play FreeDoom!\n");
+    lprintf(LO_ALWAYS, "Contributors to the Freedoom project.  All rights reserved.");
+
+    lprintf(LO_ALWAYS, "\nPhew. Thats the legal\nstuff out of the way.\nLets play FreeDoom!\n");
 
 
 
@@ -741,7 +709,7 @@ void GetFirstMap(int *ep, int *map)
     {
         *ep = 1;
         *map = 1; // default E1M1 or MAP01
-        if (_g->gamemode == commercial)
+        if (_g->gamemode == phase2)
         {
             for (i=1;!done && i<33;i++)  // Ty 09/13/98 - add use of !done
             {

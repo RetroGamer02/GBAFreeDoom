@@ -495,7 +495,7 @@ void P_SetupLevel(int episode, int map, int playermask, skill_t skill)
     //    W_Reload ();     killough 1/31/98: W_Reload obsolete
 
     // find map name
-    if (_g->gamemode == commercial)
+    if (_g->gamemode == phase2)
     {
         sprintf(lumpname, "MAP%02d", map);           // killough 1/24/98: simplify
     }
@@ -546,7 +546,7 @@ void P_SetupLevel(int episode, int map, int playermask, skill_t skill)
     }
 
     // killough 3/26/98: Spawn icon landings:
-    if (_g->gamemode==commercial)
+    if (_g->gamemode==phase2)
         P_SpawnBrainTargets();
 
     // set up world state

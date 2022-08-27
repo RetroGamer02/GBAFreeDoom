@@ -122,7 +122,7 @@ unsigned int fps_framerate;
 //doomstat.c
 //******************************************************************************
 
-// Game Mode - identify IWAD as shareware, retail etc.
+// Game Mode - identify IWAD as phase1 etc.
 GameMode_t gamemode;
 GameMission_t   gamemission;
 

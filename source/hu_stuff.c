@@ -142,7 +142,7 @@ const int hud_msg_lines = 1;  // number of message lines in window
 // Ty 03/27/98 - externalized map name arrays - now in d_deh.c
 // and converted to arrays of pointers to char *
 // See modified HUTITLEx macros
-// DOOM shareware/registered/retail (Ultimate) names.
+// DOOM phase1 (Ultimate) names.
 // CPhipps - const**const
 const char *const mapnames[] =
 {
@@ -388,13 +388,11 @@ void HU_Start(void)
     if (_g->gamestate == GS_LEVEL) /* cph - stop SEGV here when not in level */
         switch (_g->gamemode)
         {
-        case shareware:
-        case registered:
-        case retail:
+        case phase1:
             s = HU_TITLE;
             break;
 
-        case commercial:
+        case phase2:
         default:  // Ty 08/27/98 - modified to check mission for TNT/Plutonia
             s = (_g->gamemission==pack_tnt)  ? HU_TITLET :
                                                (_g->gamemission==pack_plut) ? HU_TITLEP : HU_TITLE2;
