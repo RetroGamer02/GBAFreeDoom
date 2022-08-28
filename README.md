@@ -5,6 +5,7 @@ The Freedoom IWAD was made thanks to [the Freedoom team](https://freedoom.github
 A port of [prBoom](https://doomwiki.org/wiki/PrBoom) to the GBA.
 
 This is a result of me, Devin "RetroGamer02", messing around, it works but it's not great. With some help maybe it could be.
+Special thanks to DoomHack for the Engine, KippyKip for Advice, and DynTylluan for helping me make sure everything is nice and legal.
 
 **What's hot?**
 
