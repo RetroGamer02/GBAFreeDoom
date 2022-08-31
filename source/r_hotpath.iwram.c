@@ -725,8 +725,10 @@ void R_DrawFuzzColumnSaturn(const draw_column_vars_t *dcvars)
     int dc_yl = dcvars->yl;
     int dc_yh = dcvars->yh;
 
+    //int dc_x = dcvars->x;
+
     int count;
-    byte *dest;
+    volatile ushort *dest;
     fixed_t frac;
     fixed_t fracstep;
     int initialdrawpos = 0;
@@ -756,7 +758,7 @@ void R_DrawFuzzColumnSaturn(const draw_column_vars_t *dcvars)
 
     if (initialdrawpos & 1)
     {
-        dest += SCREENWIDTH * 2;
+        dest += SCREENWIDTH;
         frac += fracstep;
     }
 
@@ -766,7 +768,8 @@ void R_DrawFuzzColumnSaturn(const draw_column_vars_t *dcvars)
     {
         *dest = colormap[dcvars->source[frac>>COLBITS]];
 
-        dest += SCREENWIDTH * 4;
+        dest += SCREENWIDTH * 2;
+        
         frac += fracstep;
 
     } while (count--);
@@ -859,7 +862,6 @@ static void R_DrawVisSprite(const vissprite_t *vis)
 
     if (!dcvars.colormap)   // NULL colormap = shadow draw
         colfunc = R_DrawFuzzColumn;    // killough 3/14/98
-    //Fixme R_DrawFuzzColumnSaturn
     else
     {
         hires = highDetail;
@@ -3014,9 +3016,9 @@ void V_DrawPatchNoScale(int x, int y, const patch_t* patch)
     {
         const column_t* column = (const column_t*)((const byte*)patch + patch->columnofs[col]);
 
-        unsigned int odd_addr = (unsigned int)desttop & 1;
+        unsigned int odd_addr = (size_t)desttop & 1;
 
-        byte* desttop_even = (byte*)((unsigned int)desttop & 0xfffffffe);
+        byte* desttop_even = (byte*)((size_t)desttop & ~1);
 
         // step through the posts in a column
         while (column->topdelta != 0xff)
